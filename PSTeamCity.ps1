@@ -3,7 +3,7 @@ $ErrorActionPreference = "Stop";
 register PSUrl;
 register PSColorWriter;
 
-$serverUrl = Read-Prompt-Color -Green "PSTeamCity" -White "Please insert the server url for teamcity";
+$script:serverUrl = Read-Prompt-Color -Green "PSTeamCity" -White "Please insert the server url for teamcity";
 
 Set-UrlCredentials;
 
