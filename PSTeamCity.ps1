@@ -23,7 +23,7 @@ function Get-TeamCityProjectStatus {
 		$allBuilds += @{ "item" = Get-TeamCityBuildStatus -buildTypeId $build.id; };
 	}
 	
-	$allBuilds | Where-Object { $where.Invoke($_.item) } | Format-Table;
+	$allBuilds | Where-Object { $where.Invoke($_.item) };
 }
 
 function Get-TeamCityBuildStatus
