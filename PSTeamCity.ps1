@@ -7,6 +7,14 @@ $script:serverUrl = Read-Prompt-Color -Green "PSTeamCity" -White "Please insert 
 
 Set-UrlCredentials;
 
+function Trigger-TeamCityBuild {
+	param(
+		[parameter(Mandatory = $true)][string] $buildTypeId
+	);
+	
+	Set-UrlContent "$script:serverUrl/httpAuth/action.html?add2Queue=$buildTypeId";	
+}
+
 function Get-TeamCityProjectStatus {
 	param(
 		[parameter(Mandatory = $true)][string]$project,
