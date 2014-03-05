@@ -17,21 +17,23 @@ function Trigger-TeamCityBuild {
 
 function Get-TeamCityProjectStatus {
 	param(
-		[parameter(Mandatory = $true)][string]$project,
+		[parameter(Mandatory = $true)][string[]]$projects,
 		[Func[Object, bool]]$where = { param($item) -not($item.success); }
 	);
 	
-	[xml]$xml = Get-UrlContent "$script:serverUrl/httpAuth/app/rest/projects/$project";
-	write-output-color -Green "PSTeamcity" -White "Project $($xml.project.name) loaded";
-	$buildTypes = $xml.project.buildTypes;
-	
-	$allBuilds = @();
-	foreach ($build in $buildTypes.GetEnumerator()) {
-	    write-output-color -Green "PSTeamcity" -White "Build with id $($build.id)";
-		$allBuilds += @{ "item" = Get-TeamCityBuildStatus -buildTypeId $build.id; };
+	foreach($project in $projects) {
+		[xml]$xml = Get-UrlContent "$script:serverUrl/httpAuth/app/rest/projects/$project";
+		write-output-color -Green "PSTeamcity" -White "Project $($xml.project.name) loaded";
+		$buildTypes = $xml.project.buildTypes;
+		
+		$allBuilds = @();
+		foreach ($build in $buildTypes.GetEnumerator()) {
+		    write-output-color -Green "PSTeamcity" -White "Build with id $($build.id)";
+			$allBuilds += @{ "item" = Get-TeamCityBuildStatus -buildTypeId $build.id; };
+		}
+		
+		$allBuilds | Where-Object { $where.Invoke($_.item) };
 	}
-	
-	$allBuilds | Where-Object { $where.Invoke($_.item) };
 }
 
 function Get-TeamCityBuildStatus
