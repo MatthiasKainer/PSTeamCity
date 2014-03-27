@@ -5,7 +5,7 @@ register PSColorWriter;
 
 $script:serverUrl = Read-Prompt-Color -Green "PSTeamCity" -White "Please insert the server url for teamcity";
 
-Set-UrlCredentials;
+Set-UrlCredentialsFor $script:serverUrl;
 
 function Trigger-TeamCityBuild {
 	param(
