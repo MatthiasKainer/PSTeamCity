@@ -23,12 +23,10 @@ function Get-TeamCityProjectStatus {
 	
 	foreach($project in $projects) {
 		[xml]$xml = Get-UrlContent "$script:serverUrl/httpAuth/app/rest/projects/$project";
-		write-output-color -Green "PSTeamcity" -White "Project $($xml.project.name) loaded";
 		$buildTypes = $xml.project.buildTypes;
 		
 		$allBuilds = @();
 		foreach ($build in $buildTypes.GetEnumerator()) {
-		    write-output-color -Green "PSTeamcity" -White "Build with id $($build.id)";
 			$allBuilds += @{ "item" = Get-TeamCityBuildStatus -buildTypeId $build.id; };
 		}
 		
@@ -43,7 +41,6 @@ function Get-TeamCityBuildStatus
 	);
 	
    	[xml]$xml = Get-UrlContent $("$script:serverUrl/httpAuth/app/rest/buildTypes/id:$buildTypeId/builds/running:any");
-	write-output-color -Green "PSTeamcity" -White "Build with status $($xml.build.status) and state $($xml.build.state)";
 	return @{ 
 		"success" = $xml.build.status -eq "SUCCESS";
 		"running" = $xml.build.state -eq "running";
