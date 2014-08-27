@@ -3,6 +3,12 @@ PSTeamCity
 
 Powershell Tools to get the teamcity build status for a project, and trigger a new build
 
+## install 
+
+Use PSReg and then
+> register PSTeamCity;
+
+
 ## Usage
 
 
